@@ -15,7 +15,7 @@ class StudentController extends Controller
     public function getByID($id) {
         $student = Student::where('id', $id)->where('status', 1)->first();
         if(!$student) {        
-            return response()->json(["error"=>"Course not existent or deleted. Verify the course's id."]);
+            return response()->json(["error"=>"Student not found or deleted. Please, verify the student's id."]);
         }
         return $student;
     }
@@ -32,7 +32,7 @@ class StudentController extends Controller
     }
     public function update(Request $request, Student $student) {
         if($student->status != 1) {
-            return response()->json(['error'=>'Course selected not found or deleted. Choose another.']);
+            return response()->json(['error'=>'Student not found or deleted. Please, choose another one.']);
         }
         $student->name = $request->name;
         $student->role = $request->role;

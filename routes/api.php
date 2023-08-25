@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +33,16 @@ Route::get('/students/{id}', [StudentController::class, 'getById']);
 Route::post('/students/create', [StudentController::class, 'create']);
 Route::put('/students/update/{student}', [StudentController::class, 'update']);
 Route::put('/students/delete/{student}', [StudentController::class, 'delete']);
+
+Route::get('/teachers', [TeacherController::class, 'index']);
+Route::get('/teachers/{id}', [TeacherController::class, 'getById']);
+Route::post('/teachers/create', [TeacherController::class, 'create']);
+Route::put('/teachers/update/{student}', [TeacherController::class, 'update']);
+Route::put('/teachers/delete/{student}', [TeacherController::class, 'delete']);
+
+Route::get('/attendance', [AttendanceController::class, 'index']);
+Route::get('/attendance/{id}', [AttendanceController::class, 'getByDate']);
+Route::post('/attendance/create', [AttendanceController::class, 'create']);
+/* Route::put('/attendance/update/{student}', [AttendanceController::class, 'update']);
+Route::put('/attendance/delete/{student}', [AttendanceController::class, 'delete']); */
+
