@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->string('status');
+            $table->string('report');
             $table->unsignedBigInteger('student_id')->nullable();
             $table->foreign('student_id')->references('id')->on('students');
+            $table->integer('status');
             $table->timestamps();
         });
     }

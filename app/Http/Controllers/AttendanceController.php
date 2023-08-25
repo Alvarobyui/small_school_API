@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Attendance;
+
+use function PHPUnit\Framework\isEmpty;
+
 class AttendanceController extends Controller
 {
     public function index() {
@@ -18,14 +21,23 @@ class AttendanceController extends Controller
         $table->foreign('student_id')->references('id')->on('students');
  */ }
     public function getByDate($date) {
-        $attendance = Attendance::where('date', $date)->where('status', 1)->all();
-        if(!$attendance) {        
-            return response()->json(["error"=>"Date not registered or deleted. Please, try another one."]);
+        $attendance = Attendance::where('date', $date)->where('status', 1)->get();
+
+        if($attendance->isEmpty()) {        
+            return response()->json(["error" => "Date not registered or deleted. Please, try another one."]);
         }
-        return $attendance;
+
+        return response()->json($attendance);
     }
 
     public function create(Request $request) {
-        return $request;
+        $attendance = new Attendance();
+        $attendance->date = $request->date;
+        $attendance->report = $request->report;
+        $attendance->student_id = $attendance->student_id;
+        $attendance->status = $attendance->status;
+
+        $attendance->save();
+        return $attendance;
     }
 }

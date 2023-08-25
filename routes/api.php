@@ -41,7 +41,7 @@ Route::put('/teachers/update/{student}', [TeacherController::class, 'update']);
 Route::put('/teachers/delete/{student}', [TeacherController::class, 'delete']);
 
 Route::get('/attendance', [AttendanceController::class, 'index']);
-Route::get('/attendance/{id}', [AttendanceController::class, 'getByDate']);
+Route::get('/attendance/{date}', [AttendanceController::class, 'getByDate']);
 Route::post('/attendance/create', [AttendanceController::class, 'create']);
 /* Route::put('/attendance/update/{student}', [AttendanceController::class, 'update']);
 Route::put('/attendance/delete/{student}', [AttendanceController::class, 'delete']); */

@@ -24,7 +24,7 @@ class CourseController extends Controller
         $course->description = $request->description;
         $course->status = 1;
         $course->save();
-        /* return redirect()->route('/courses', $course->id); */
+        
         return $course;
     }
     public function update(Request $request, Course $course) {
