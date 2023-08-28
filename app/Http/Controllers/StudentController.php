@@ -10,14 +10,14 @@ use Illuminate\Validation\ValidationException;
 class StudentController extends Controller
 {
     public function index() {
-        $students = Student::where('status', 1)->get();
+        $students = Student::with('course')->where('status', 1)->get();
         return $students;
     }
     
     public function getByID($id) {
-        $student = Student::where('id', $id)->where('status', 1)->first();
+        $student = Student::with('course')->where('id', $id)->where('status', 1)->first();
         if(!$student) {        
-            return response()->json(["error"=>"Student not found or deleted. Please, verify the student's id."]);
+            return response()->json(["error" => "Student not found or deleted. Please, verify the student's id."]);
         }
         return $student;
     }
