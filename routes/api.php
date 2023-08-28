@@ -38,8 +38,8 @@ Route::put('/students/delete/{student}', [StudentController::class, 'delete']);
 Route::get('/teachers', [TeacherController::class, 'index']);
 Route::get('/teachers/{id}', [TeacherController::class, 'getById']);
 Route::post('/teachers/create', [TeacherController::class, 'create']);
-Route::put('/teachers/update/{student}', [TeacherController::class, 'update']);
-Route::put('/teachers/delete/{student}', [TeacherController::class, 'delete']);
+Route::put('/teachers/update/{teacher}', [TeacherController::class, 'update']);
+Route::put('/teachers/delete/{teacher}', [TeacherController::class, 'delete']);
 
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::get('/attendance/{date}', [AttendanceController::class, 'getByDate']);

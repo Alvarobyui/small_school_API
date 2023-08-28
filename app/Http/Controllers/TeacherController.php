@@ -48,14 +48,24 @@ class TeacherController extends Controller
         if($teacher->status != 1) {
             return response()->json(['error'=>'Teacher not found or deleted. Please, choose another one.']);
         }
-        $teacher->name = $request->name;
-        $teacher->role = $request->role;
-        $teacher->status = $request->status;
-        $teacher->email = $request->email;
-        $teacher->password = $request->password;
-        $teacher->save();
 
-        return $teacher;
+        try {
+            $validateData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:teachers,email',
+                'password' => 'required|string|min:8',
+            ]);
+
+            $teacher->name = $validateData['name'];
+            $teacher->email = $validateData['email'];
+            $teacher->password = $validateData['password'];
+            $teacher->save();
+
+            return $teacher;
+
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        }
     }
 
     public function delete(Teacher $teacher) {
