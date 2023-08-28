@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Database\QueryException;
 use App\Models\Course;
-
+use Illuminate\Validation\ValidationException;
 class StudentController extends Controller
 {
     public function index() {
         $students = Student::where('status', 1)->get();
         return $students;
     }
+    
     public function getByID($id) {
         $student = Student::where('id', $id)->where('status', 1)->first();
         if(!$student) {        
@@ -20,31 +21,54 @@ class StudentController extends Controller
         }
         return $student;
     }
+
     public function create(Request $request) {
-        $student = new Student();
-        $student->name = $request->name;
-        $student->role = 2;
-        $student->status = 1;
-        $student->email = $request->email;
-        $student->password = $request->password;
-        $student->save();
-        
-        return $student;
+        try {
+            $validateData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:students,email',
+                'password' => 'required|string|min:8',
+            ]);
+
+            $student = new Student();
+            $student->name = $validateData['name'];
+            $student->role = 2;
+            $student->status = 1;
+            $student->email = $validateData['email'];
+            $student->password = bcrypt($validateData['password']);
+            $student->save();
+            
+            return $student;
+
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        }    
     }
+
     public function update(Request $request, Student $student) {
         if($student->status != 1) {
             return response()->json(['error'=>'Student not found or deleted. Please, choose another one.']);
         }
-        $student->name = $request->name;
-        $student->role = $request->role;
-        $student->email = $request->email;
-        $student->password = $request->password;
-        $student->course_id = $request->course_id;
-        $student->save();
 
-        return $student;
+        try {
+            $validateData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:students,email',
+                'password' => 'required|string|min:8',
+            ]);
+
+            $student->name = $validateData['name'];
+            $student->email = $validateData['email'];
+            $student->password = bcrypt($validateData['password']);
+            $student->save();
+
+            return $student;
+        
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        }
     }
-    
+
     public function enroll(Request $request, Student $student) {
         // Si el course_id está presente, lo usamos directamente
         if ($request->has('course_id')) {

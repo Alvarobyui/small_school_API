@@ -29,16 +29,16 @@ class TeacherController extends Controller
                 'password' => 'required|string|min:8',
             ]);
         
-
             $teacher = new Teacher();
             $teacher->name = $validateData['name'];
-            $teacher->role = 2;
+            $teacher->role = 1;
             $teacher->status = 1;
             $teacher->email = $validateData['email'];
             $teacher->password = bcrypt($validateData['password']);
             $teacher->save();
             
             return $teacher;
+
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         }
@@ -58,7 +58,7 @@ class TeacherController extends Controller
 
             $teacher->name = $validateData['name'];
             $teacher->email = $validateData['email'];
-            $teacher->password = $validateData['password'];
+            $teacher->password = bcrypt($validateData['password']);
             $teacher->save();
 
             return $teacher;
