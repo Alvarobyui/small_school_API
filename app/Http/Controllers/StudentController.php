@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Database\QueryException;
+use App\Models\Course;
 
 class StudentController extends Controller
 {
@@ -36,12 +37,40 @@ class StudentController extends Controller
         }
         $student->name = $request->name;
         $student->role = $request->role;
-        $student->status = $request->status;
         $student->email = $request->email;
         $student->password = $request->password;
+        $student->course_id = $request->course_id;
         $student->save();
 
         return $student;
+    }
+    
+    public function enroll(Request $request, Student $student) {
+        // Si el course_id está presente, lo usamos directamente
+        if ($request->has('course_id')) {
+            $course = Course::find($request->course_id);
+            if (!$course) {
+                return response()->json(['error' => 'Invalid course ID.'], 400);
+            }
+            $student->course_id = $course->id;
+        } 
+        // Si el nombre del curso está presente, buscamos el curso por su nombre
+        elseif ($request->has('course_name')) {
+            $course = Course::where('name', $request->course_name)->first();
+            if (!$course) {
+                return response()->json(['error' => 'Course not found with the provided name.'], 400);
+            }
+            $student->course_id = $course->id;
+        } 
+        // Si ninguno de los dos está presente, retornamos un error
+        else {
+            return response()->json(['error' => 'You must provide either a course ID or course name.'], 400);
+        }
+    
+        // Guardar el estudiante con el course_id actualizado
+        $student->save();
+    
+        return response()->json(['message' => 'Student enrolled successfully.']);
     }
 
     public function delete(Student $student) {

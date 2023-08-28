@@ -32,6 +32,7 @@ Route::get('/students', [StudentController::class, 'index']);
 Route::get('/students/{id}', [StudentController::class, 'getById']);
 Route::post('/students/create', [StudentController::class, 'create']);
 Route::put('/students/update/{student}', [StudentController::class, 'update']);
+Route::put('/students/enroll/{student}', [StudentController::class, 'enroll']);
 Route::put('/students/delete/{student}', [StudentController::class, 'delete']);
 
 Route::get('/teachers', [TeacherController::class, 'index']);
@@ -43,6 +44,6 @@ Route::put('/teachers/delete/{student}', [TeacherController::class, 'delete']);
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::get('/attendance/{date}', [AttendanceController::class, 'getByDate']);
 Route::post('/attendance/create', [AttendanceController::class, 'create']);
-/* Route::put('/attendance/update/{student}', [AttendanceController::class, 'update']);
-Route::put('/attendance/delete/{student}', [AttendanceController::class, 'delete']); */
+Route::put('/attendance/update/{attendance}', [AttendanceController::class, 'update']);
+Route::put('/attendance/delete/{attendance}', [AttendanceController::class, 'delete']);
 

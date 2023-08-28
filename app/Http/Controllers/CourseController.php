@@ -28,9 +28,10 @@ class CourseController extends Controller
         return $course;
     }
     public function update(Request $request, Course $course) {
-        if($course->status != 1) {
-            return response()->json(['error'=>'Course selected not found or deleted. Choose another.']);
-        }
+        if($request->status == 0) {
+            return response()->json(['error'=>'Course not found or deleted. Please, choose another one.']);
+        } 
+        
         $course->name = $request->name;
         $course->description = $request->description;
         $course->save();
